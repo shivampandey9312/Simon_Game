@@ -1,40 +1,19 @@
-var buttonColors =["red", "blue", "green", "yellow"];
 
-var gamePattern=[];
-var userClickedPattern=[];
+var buttonColours = ["red", "blue", "green", "yellow"];
 
-var started=false;
+var gamePattern = [];
+var userClickedPattern = [];
+
+var started = false;
 var level = 0;
 
-function playSound(name){
-  var audio = new Audio("sounds/"+name+".mp3");
-  audio.play();
-}
-
-function animatePress(currentColor){
-  $("#"+currentColor).addClass("pressed");
-  setTimeout(function(){
-    $("#"+currentColor).removeClass("pressed");
-  },100);
-}
-
-function startOver(){
-  level = 0;
-  gamePattern =[];
-  start=false;
-}
-
-function nextSequence(){
-  userClickedPattern=[];
-  level++;
-  $("#level-title").text("level "+level);
-  var randomNumber=Math.floor(Math.random()*4);
-  var randomChosenColour = buttonColors[randomNumber];
-  gamePattern.push(randomChosenColour);
-
-  $("#"+randomChosenColour).fadeIn(100).fadeOut(100).fadeIn(100);
-  playSound(randomChosenColour);
-}
+$(document).keypress(function() {
+  if (!started) {
+    $("#level-title").text("Level " + level);
+    nextSequence();
+    started = true;
+  }
+});
 
 $(".btn").click(function() {
 
@@ -68,10 +47,33 @@ function checkAnswer(currentLevel) {
     }
 }
 
-$(document).keypress(function() {
-  if (!started) {
-    $("#level-title").text("Level " + level);
-    nextSequence();
-    started = true;
-  }
-});
+
+function nextSequence() {
+  userClickedPattern = [];
+  level++;
+  $("#level-title").text("Level " + level);
+  var randomNumber = Math.floor(Math.random() * 4);
+  var randomChosenColour = buttonColours[randomNumber];
+  gamePattern.push(randomChosenColour);
+
+  $("#" + randomChosenColour).fadeIn(100).fadeOut(100).fadeIn(100);
+  playSound(randomChosenColour);
+}
+
+function animatePress(currentColor) {
+  $("#" + currentColor).addClass("pressed");
+  setTimeout(function () {
+    $("#" + currentColor).removeClass("pressed");
+  }, 100);
+}
+
+function playSound(name) {
+  var audio = new Audio("sounds/" + name + ".mp3");
+  audio.play();
+}
+
+function startOver() {
+  level = 0;
+  gamePattern = [];
+  started = false;
+}
